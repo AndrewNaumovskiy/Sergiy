@@ -7,12 +7,18 @@ using System.Threading.Tasks;
 using System.Windows;
 using sergiy.Models;
 using static sergiy.Models.Account;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using System.Threading;
 
 namespace sergiy
 {
     public class MainWindowViewModel : ViewModelBase
     {
         #region Fields
+
+        IWebDriver driver;
+
 
         private RelayCommand _uploadProxyCommand;
         private RelayCommand _uploadAccountsCommand;
@@ -127,9 +133,58 @@ namespace sergiy
 
         private void StartAction()
         {
-            Accounts[0].Status = Account.AccountStatus.CorrectCreds;
-            Accounts[1].Status = Account.AccountStatus.WrongCreds;
-            Accounts[2].Status = Account.AccountStatus.CorrectCreds;
+            Thread kek = new Thread(meow);
+            kek.Start();
+        }
+
+        private async void meow()
+        {
+            await Task.Run(() => 
+            {
+                driver = new ChromeDriver();
+                driver.Navigate().GoToUrl("https://auth.riotgames.com/login#client_id=rso-web-client-prod&login_hint=na&redirect_uri=https%3A%2F%2Flogin.leagueoflegends.com%2Foauth2-callback&response_type=code&scope=openid&state=&ui_locales=en-us");
+
+                Thread.Sleep(5000);
+
+                IWebElement login = driver.FindElement(By.Name("username"));
+                login.SendKeys("IamHoustonJoker");
+
+                IWebElement password = driver.FindElement(By.Name("password"));
+                password.SendKeys("Volo4nuk1993");
+
+                IWebElement submit = driver.FindElement(By.ClassName("mobile-button"));
+                submit.Click();
+
+                Thread.Sleep(2000);
+
+                driver.Navigate().GoToUrl("https://account.riotgames.com/account");
+
+                IWebElement passwordCheck = driver.FindElement(By.ClassName("field__form-input"));
+                passwordCheck.SendKeys("Volo4nuk1993");
+
+                submit = driver.FindElement(By.ClassName("mobile-button"));
+                submit.Click();
+
+
+                if (driver.FindElements(By.ClassName("grid-direction__column")).Count != 0)
+                {
+                    //MessageBox.Show("BINDED");
+                }
+                
+
+                driver.Navigate().GoToUrl("https://na.leagueoflegends.com/en-us/");
+
+                Thread.Sleep(2000);
+
+                var continuew = driver.FindElement(By.ClassName("continue"));
+                continuew.Click();
+                
+                Thread.Sleep(2000);
+
+               
+                //var kek = driver.FindElement(By.ClassName(""));
+            });
+            
         }
 
         private void Filter()

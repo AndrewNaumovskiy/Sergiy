@@ -19,6 +19,7 @@ namespace sergiy.Models
 
         public string Login { get; set; }
         public string Password { get; set; }
+        public bool BindedEmail { get; set; }
         public AccountStatus Status 
         { 
             get => _status; 
@@ -35,6 +36,7 @@ namespace sergiy.Models
             Login = login;
             Password = password;
             Status = AccountStatus.None;
+            BindedEmail = false;
             Description = "";
         }
     }
