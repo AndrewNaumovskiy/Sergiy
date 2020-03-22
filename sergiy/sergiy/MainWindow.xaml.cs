@@ -23,6 +23,8 @@ namespace sergiy
         public MainWindow()
         {
             InitializeComponent();
+
+            DataContext = new MainWindowViewModel();
         }
     }
 }

@@ -7,6 +7,73 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+            <Button Content="Upload credential"
+                    HorizontalAlignment="Right"
+                    Command="{Binding UploadProxyCommand}"/>
+            <DataGrid ItemsSource="{Binding UploadProxies}"
+                      ColumnWidth="*"
+                      AutoGenerateColumns="False"
+                      CanUserReorderColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="IP"
+                                        Binding="{Binding Path=IP}"/>
+                    <DataGridTextColumn Header="Port"
+                                        Binding="{Binding Path=Port}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+
+
+        <StackPanel Grid.Column="1">
+            <Grid>
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox Content="Status"
+                              IsChecked="{Binding SortStatus}"/>
+
+                </StackPanel>
+                <Button Content="Upload accounts"
+                        HorizontalAlignment="Right"
+                        Command="{Binding UploadAccountsCommand}"/>
+            </Grid>
+            <DataGrid ItemsSource="{Binding Accounts}"
+                      ColumnWidth="*"
+                      AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Login"
+                                        Binding="{Binding Path=Login}"/>
+                    <DataGridTextColumn Header="Password"
+                                        Binding="{Binding Path=Password}"/>
+                    <DataGridTextColumn Header="Description"
+                                        Binding="{Binding Path=Description}"/>
+                </DataGrid.Columns>
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=Status}" 
+                                         Value="CorrectCreds">
+                                <Setter Property="Background"
+                                        Value="Green"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=Status}" 
+                                         Value="WrongCreds">
+                                <Setter Property="Background"
+                                        Value="Red"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
+            </DataGrid>
+        </StackPanel>
+
+        <StackPanel Grid.Column="2">
+            <Button Content="Start"
+                    Command="{Binding StartCommand}"/>
+        </StackPanel>
     </Grid>
 </Window>
